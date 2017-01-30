@@ -7,6 +7,7 @@ Feel free to fork and contribute with your own guidelines.
 - [Type declaration](#type-declaration)
 - [Extensions](#extensions)
 - [Marks](#marks)
+- [Closures](#closures)
 
 ## Variables and constants
 ### Define constants or, only if needed, variables
@@ -266,5 +267,45 @@ final class Controller: UIViewController {
     deinit {
         print("deinitialized")
     }
+}
+```
+
+## Closures
+### Closures instead of delegation pattern
+When possible, use closures instead of delegation pattern, being careful about any retain cycle.
+An example
+
+```swift
+protocol ViewControllerDelegate {
+    func viewControllerDidTap(_ controller: ViewController)
+}
+```
+
+Can be replaced by
+
+```swift
+class ViewController {
+    ...
+    var onTap: (() -> ())?
+}
+```
+
+### Using trailing closures
+When passing a trailing closures pay attention to the style. Xcode automatically build the pamarater like below:
+
+```swift
+// The method definition
+func doSomething(aParam: String, _ closure: (Bool) -> ())
+
+// The usage from Xcode
+doSomething("Hello", { (boolean) in
+})
+```
+
+Define the trailing parameter like bwlow instead:
+
+```swift
+// The correct usage
+doSomething("Hello") { boolean in
 }
 ```
